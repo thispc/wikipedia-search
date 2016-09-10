@@ -5,11 +5,7 @@ var base="https://en.wikipedia.org/w/api.php?";
 var end="&callback=?"
 var searchUrl="action=query&list=search&format=json&srsearch=";
 var titleUrl="action=query&prop=info&format=json&inprop=url&titles="
-var Entry=function(){
-  this.title;
-  this.fullUrl;
-  this.snippet;
-}
+
 var keyword;
   $('#search-text').keypress(function(e){
       if(e.keyCode==13)
@@ -50,12 +46,12 @@ $(".results").html("");
            
             var key=Object.keys(data.query.pages);
             
-            searchResults[i]=new Entry();
-            searchResults[i].fullUrl=data.query.pages[key].fullurl;
-            searchResults[i].title=data.query.pages[key].title;
-            searchResults[i].snippet=strip(data.query.pages[key].extract.substr(0,100)+"...");
+            
+            var aa=data.query.pages[key].fullurl;
+            var bb=data.query.pages[key].title;
+            var cc=strip(data.query.pages[key].extract.substr(0,100)+"...");
            
-  var content='<br><div id="article"><div class="thumbnail"><p><a target="_blank" href="'+searchResults[i].fullUrl+'">'+searchResults[i].title+'</a></p><div class="caption"><h3>'+searchResults[i].snippet+'</h3></div></div></div><br>';
+  var content='<br><div id="article"><div class="thumbnail"><p><a target="_blank" href="'+aa+'">'+bb+'</a></p><div class="caption"><h3>'+cc+'</h3></div></div></div><br>';
       $(content).appendTo(".results");
             
         }
@@ -74,9 +70,9 @@ $(".results").html("");
       async:false,
       success: function(data){
         $.each(data["query"]["search"],function(i,item){
-          searchResults[i]=new Entry();
-          searchResults[i].title=item.title;
-          searchResults[i].snippet=item.snippet;
+          
+          var aa=item.title;
+          var bb=item.snippet;
           $.ajax({
             
             url:base+titleUrl+item.title+end,
@@ -93,8 +89,8 @@ $(".results").html("");
               
               keys=Object.keys(data.query.pages);
             
-    searchResults[i].fullUrl=data.query.pages[keys].fullurl;
-  var content='<br><div id="article"><div class="thumbnail"><p><a target="_blank" href="'+searchResults[i].fullUrl+'">'+searchResults[i].title+'</a></p><div class="caption"><h3>'+searchResults[i].snippet+'</h3></div></div></div><br>';
+    var cc=data.query.pages[keys].fullurl;
+  var content='<br><div id="article"><div class="thumbnail"><p><a target="_blank" href="'+cc+'">'+aa+'</a></p><div class="caption"><h3>'+bb+'</h3></div></div></div><br>';
       $(content).appendTo(".results");
             }
           });
